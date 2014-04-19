@@ -1,31 +1,27 @@
 #!/usr/bin/env python
-# -*- coding: utf-8 -*-
-#
-#  spider.py
-#  
-#  Copyright 2014 zaslavsky <zaslavsky@CELESTIA>
-#  
+#-*- encoding: cp1251 -*-
 
-import mechanize
-from BeautifulSoup import BeautifulSoup
-import pymongo
+import json, urllib, xlwr, xlrd
+
+
+url_main = "http://api.worldoftanks.ru/wot/encyclopedia/tankinfo/?application_id=09be322fee8ba81d502df3cd5a03a6c5"
 
 
 
 
-browse = mechanize.Browser()
-
-url_home = "http://ru.dotabuff.com" 	     	
 
 
-def def_open_url(url): 							
-	open_url = browse.open(url)
-	read_text = open_url.read()
-	soup = BeautifulSoup(read_text)
-	print soup								
+
+
+txt_data = urllib.urlopen(url_main+"&tank_id=81").read()
+
+data = json.loads(txt_data)
+
+print data["data"]["81"]["weight"]
 
 def main():
-	def_open_url(url_home)
+	
+	return 0
 
-if __name__ == '__main__':
-	main()
+
+
