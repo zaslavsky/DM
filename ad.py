@@ -2,64 +2,67 @@
 #-*- encoding: cp1251 -*-
 from init import *
 
-localdata=xlwt.Workbook()
-file_data=localdata.add_sheet('Main')
+
 
 client = pymongo.MongoClient("localhost", 27017)
 db=client.WOT
 db.players
 #db.players.save()
 
+BORDER=100
+ID=1680920
 
-source_filename = "mask.xls"
-destination_filename = "data.xls"
-
-read_book = xlrd.open_workbook(source_filename, on_demand=True)  # Открываем исходный документ
-read_sheet = read_book.get_sheet(0)  # Читаем из первого листа
-localdata = copy(read_book)  # Копируем таблицу в память, в неё мы ниже будем записывать
-xls = localdata.get_sheet(0)  # Будем записывать в первый лист
-
-URL=url_stats+profile+str(ID)
-nojson=urllib.urlopen(URL).read()
-data = json.loads(urllib.urlopen(URL).read())
-
-player_stat=data["data"][str(ID)]["statistics"]["all"]
-
-games=player_stat["battles"]
-wins=player_stat["wins"]
-
-print games,wins
-#print data
-#print "\n\n\n\n"+str(nojson)
-db.players.save(data)
-
-#player_stat=a["data"][str(ID)]["statistics"]["all"]
-
-#games=player_stat["battles"]
-#wins=player_stat["wins"]
-
-def data_grabbing():
-	while True:
-		txt_data = urllib.urlopen(url_stat+profile+str(ID)).read()
-		data = json.loads(txt_data)
-		try:
-			print len(data["data"][str(ID)])
-			print "battles:"+str(player_stat["battles"])
-			print "battles:"+str(player_stat["wins"])
+def data_stat_get(ID):
+	URL=url_stats+profile+str(ID)
+	text_json=urllib.urlopen(URL).read()
+	data = json.loads(text_json)
+	
+	data=data["data"][str(ID)]#["statistics"]["all"]
+	
+	try: data_stat=data["statistics"]["all"]
+	except: 
+		print("No Player")
+		return 0
+	if data_stat["battles"]<BORDER:
+		print("To low")
+		return 0
 		
-		except: print("No player: " +str(ID))
-		ID-=1
-		time.sleep(0.5)
+	games=data_stat["battles"]
+	wins=data_stat["wins"]
+	losses=data_stat["losses"]
+	draws=data_stat["draws"]
+	spotted=["spotted"]
+	shoots=data_stat["shots"]
+	hits_percents=data_stat["hits_percents"]
+	
+	damage_dealt=data_stat["damage_dealt"]
+	damage_recive=data_stat["damage_received"]
+	
+	frags=data_stat["frags"]
+	survive=data_stat["survived_battles"]
+	
+	battle_avg_xp=data_stat["battle_avg_xp"]
+	
+	nick=data["nickname"]
 
+	print nick
+	print str(ID)+" games:"+str(games)
+	#print games
+	print "Wins:" +str(wins)
+	print "Draws: " +str(draws)
+	print "Frags: "+str(frags)
+	
+def dbgs():
+	URL=url_stats+profile+str(ID)
+	text_json=urllib.urlopen(URL).read()
+	data = json.loads(text_json)
+	data=data["data"][str(ID)]
+	print data{"_ID":ID}
 
-def data_save():
-	
-	xls.write(1, 0, str(ID))
-	xls.write(1, 1,  str(games))
-	xls.write(1, 2,  str(wins))
-	#xls.write(2, 2, xlwt.Formula("A3+B3"))
-	
-	localdata.save(destination_filename)
-	
-#data_save()
+dbgs()
+#while True:
+#	data_stat_get(ID)
+#	ID+=1
+#	time.sleep(0.5)
+
 
