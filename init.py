@@ -12,13 +12,15 @@ APP_ID="09be322fee8ba81d502df3cd5a03a6c5"
 url_info = "http://api.worldoftanks.ru/wot/encyclopedia/tankinfo/?application_id="+APP_ID 
 url_user_tanks = "http://api.worldoftanks.ru/wot/tanks/stats/?application_id="+APP_ID
 url_stats = "http://api.worldoftanks.ru/wot/account/info/?application_id="+APP_ID
+url_tanks_list = "http://api.worldoftanks.ru/wot/encyclopedia/tanks/?application_id="+APP_ID
 profile="&account_id="
 
 
 ########################################################################
 
-#localdata=xlwt.Workbook()
-#file_data=localdata.add_sheet('Main')
+xls=xlwt.Workbook()
+file_players=xls.add_sheet('Players')
+file_tanks=xls.add_sheet('Tanks')
 
 #source_filename = "mask.xls"
 #destination_filename = "data.xls"
