@@ -52,16 +52,26 @@ def data_stat_get(ID):
 	print "Draws: " +str(draws)
 	print "Frags: "+str(frags)
 	
-def dbgs():
+def dbgs(ID):
 	URL=url_stats+profile+str(ID)
 	text_json=urllib.urlopen(URL).read()
 	data = json.loads(text_json)
-	data=data["data"][str(ID)]
-	print data{"_ID":ID}
+	data=data["data"][str(ID)]["statistics"]["all"]["shots"]
+	db.users.save({"_id":ID , "data":{"games":23, "wins":20} })
+	#for user in db.users.find():
+#		print user
+	#users = db.players.find({data: {"$exists": 1}}, {"data.1680920.statistics.all": true}).pretty()
+	print data
 
-dbgs()
+	
+	print data
+#db.users.save({"_id":1680926 , "data":{"games":23, "wins":20} })
+user=db.user.find({ "_id" : 1880926 })
+user=json.loads(user)
+print user
 #while True:
-#	data_stat_get(ID)
+#	#data_stat_get(ID)
+#	dbgs(ID)
 #	ID+=1
 #	time.sleep(0.5)
 
