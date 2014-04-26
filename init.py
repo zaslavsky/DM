@@ -13,6 +13,7 @@ url_info = "http://api.worldoftanks.ru/wot/encyclopedia/tankinfo/?application_id
 url_user_tanks = "http://api.worldoftanks.ru/wot/tanks/stats/?application_id="+APP_ID
 url_stats = "http://api.worldoftanks.ru/wot/account/info/?application_id="+APP_ID
 url_tanks_list = "http://api.worldoftanks.ru/wot/encyclopedia/tanks/?application_id="+APP_ID
+
 profile="&account_id="
 
 
