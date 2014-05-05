@@ -2,15 +2,6 @@
 #-*- encoding: cp1251 -*-
 from init import *
 
-
-
-client = pymongo.MongoClient("localhost", 27017)
-db=client.WOT
-db.players
-
-BORDER=5000
-ID=1680920
-
 def data_stat_get(ID):
 	URL=url_stats+profile+str(ID)
 	text_json=urllib.urlopen(URL).read()
@@ -38,14 +29,17 @@ def dbsave(ID,nick,data,tanks):
 	db.players.save({"_id":ID ,"nick":nick, "data":data, "tanks":tanks})
 	
 def data_download():
+	count=0
 	Id=ID
 	while True:
 		data=data_stat_get(Id)
 		if data==0:pass
 		else:
+			count+=1
 			tanks=data_tanks_get(Id)
 			dbsave(Id,data["nickname"],data["statistics"]["all"],tanks)
 		Id+=1
+		print count
 		#time.sleep(0.1)
 		
 def data_xlxfill():
@@ -71,7 +65,9 @@ def data_xlxfill():
 		docs[count]["data"]["wins"]
 		base=float(docs[count]["data"]["battles"])
 		winrate=(docs[count]["data"]["wins"]/base)*100
+		winrate=int(winrate)
 		survived=(docs[count]["data"]["survived_battles"]/base)*100
+		survived=int(survived)
 		file_players.write(index, 0, docs[count]["_id"])
 		file_players.write(index, 1, docs[count]["nick"])
 		file_players.write(index, 2, docs[count]["data"]["battles"])
@@ -82,8 +78,8 @@ def data_xlxfill():
 		file_players.write(index, 7, docs[count]["data"]["hits"])
 		file_players.write(index, 8, docs[count]["data"]["hits_percents"])
 		file_players.write(index, 9, docs[count]["data"]["frags"])
-		file_players.write(index, 10, int(winrate))
-		file_players.write(index, 11, int(survived))
+		file_players.write(index, 10, str(winrate)+"%")
+		file_players.write(index, 11, str(survived)+"%")
 		#file_players.write(index, 9, tank_count)
 		#file_players.write(index, 6, docs[index]["data"][""])
 		count+=1
@@ -103,5 +99,11 @@ data_xlxfill()
 #
 #tanks_list()
 #data_download()
-#docs = list(db.players.find({"_id":1680926}))
-#print docs[0]["data"].keys()
+#docs = list(db.players.find())
+#print docs[0].keys()
+
+#print tank
+#for i in docs:
+#	for a in range(len(i["tanks"])):
+#		tid=str(i["tanks"][a]["tank_id"])
+#		print str(i["tanks"][a]["all"]["spotted"])+" by "+str(tanklib[tid]["name"])#.keys()
