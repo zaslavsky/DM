@@ -84,6 +84,7 @@ def data_xlxfill():
 		#file_players.write(index, 6, docs[index]["data"][""])
 		count+=1
 	xls.save('data.xls')
+	
 		
  	
  	
@@ -95,13 +96,32 @@ def tanks_list():
 	data=data["data"]
 	return data.keys()
 
-data_xlxfill()
+#data_xlxfill()
 #
 #tanks_list()
 #data_download()
-#docs = list(db.players.find())
-#print docs[0].keys()
-
+#docs = list(db.players.find({"_id":MY_ID}))
+#for p in range(len(docs)):
+#	for i in range(len(docs[p]["tanks"])):
+#		tankid= str(docs[p]["tanks"][i]["tank_id"])
+#		tankname=tanklib[tankid]["name"]
+#		sep=tankname.find(":")+1
+#		if tankname[sep:]=="GAZ-74b":print "lol"
+		
+		
+#		file_tanks.write(0,)
+		
+def data_tanks_xlxfill():
+	tanks=tanklib.keys()
+	for tank_id in range(len(tanks)):
+		name=tanklib[tanks[tank_id]]["name"]
+		split=name.find(":")+1
+		file_tanks.write(tank_id, 1, name[split:])
+		file_tanks.write(tank_id, 0, tanks[tank_id])
+	xls.save('data.xls')
+		
+	
+#data_tanks_xlxfill()
 #print tank
 #for i in docs:
 #	for a in range(len(i["tanks"])):
