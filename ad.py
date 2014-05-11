@@ -42,6 +42,20 @@ def data_download():
 		print count
 		#time.sleep(0.1)
 		
+def form():
+	file_tanks.write(0, 0, 'Nick')
+	file_tanks.write(0, 1, 'Nation')
+	file_tanks.write(0, 2, 'Tank')
+	file_tanks.write(0, 3, 'Type')
+	file_tanks.write(0, 4, 'battles')
+	file_tanks.write(0, 5, 'Wins')
+	file_tanks.write(0, 6, 'spotted')
+	file_tanks.write(0, 7, 'shoots')
+	file_tanks.write(0, 8, 'frags')
+	file_tanks.write(0, 9, 'Damage_dealth')
+	file_tanks.write(0, 10, 'Damage_recive')
+	file_tanks.write(0, 11, 'Survive')
+	
 def data_xlxfill():
 	docs = list(db.players.find())
 	file_players.write(0, 0, 'ID')
@@ -112,16 +126,36 @@ def tanks_list():
 #		file_tanks.write(0,)
 		
 def data_tanks_xlxfill():
+	raw=1
+	docs = list(db.players.find())
+	#docs = list(db.players.find({"_id":MY_ID}))
 	tanks=tanklib.keys()
-	for tank_id in range(len(tanks)):
-		name=tanklib[tanks[tank_id]]["name"]
-		split=name.find(":")+1
-		file_tanks.write(tank_id, 1, name[split:])
-		file_tanks.write(tank_id, 0, tanks[tank_id])
+	form()
+	for user in range(len(docs)):
+		u_tanks=docs[user]["tanks"]
+		for tank in range(len(u_tanks)):
+			tank_id=u_tanks[tank]["tank_id"]
+			t_name=tanklib[str(tank_id)]["name"]
+			t_type=tanklib[str(tank_id)]["type"]
+			name_split=t_name.find(":")+1
+			nat_split=t_name.find("_")
+			file_tanks.write(raw, 0, docs[user]["nick"])
+			file_tanks.write(raw, 1, t_name[1:nat_split])
+			file_tanks.write(raw, 2, t_name[name_split:])
+			file_tanks.write(raw, 3, t_type)
+			file_tanks.write(raw, 4, u_tanks[tank]["all"]["battles"])
+			file_tanks.write(raw, 5, u_tanks[tank]["all"]["wins"])
+			file_tanks.write(raw, 6, u_tanks[tank]["all"]["spotted"])
+			file_tanks.write(raw, 7, u_tanks[tank]["all"]["shots"])
+			file_tanks.write(raw, 8, u_tanks[tank]["all"]["frags"])
+			file_tanks.write(raw, 9, u_tanks[tank]["all"]["damage_dealt"])
+			file_tanks.write(raw, 10, u_tanks[tank]["all"]["damage_received"])
+			file_tanks.write(raw, 11, u_tanks[tank]["all"]["survived_battles"])
+			raw+=1
 	xls.save('data.xls')
 		
 	
-#data_tanks_xlxfill()
+data_tanks_xlxfill()
 #print tank
 #for i in docs:
 #	for a in range(len(i["tanks"])):
